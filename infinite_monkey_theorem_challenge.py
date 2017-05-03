@@ -20,17 +20,23 @@
 # this third function should print out the best string generated so far and its
 # score every 1000 tries.
 
+# Self Check Challenge
+# See if you can improve upon the program in the self check by keeping letters
+# that are correct and only modifying one character in the best string so far.
+# This is a type of algorithm in the class of ‘hill climbing’ algorithms, that is
+# we only keep the result if it is better than the previous one.
+
 import random
 
 
-def generate_string():
-    """generate a string of 28 chars randomly, drawing from a-z and the space"""
+def generate_string(n=28):
+    """generate a string of n chars randomly, drawing from a-z and the space"""
 
     chars = [chr(i) for i in xrange(97, 123)]
     chars.append(' ')
 
     sentence = ""
-    for i in range(28):
+    for i in range(n):
         num = random.randint(0, 26)
         sentence += chars[num]
     return sentence
@@ -50,11 +56,32 @@ def score_string(s):
     return percentage
 
 
+def regenerate(s):
+    """compare a string to a goal string and regenerate random strings to replace
+    only the parts that don't match the goal string"""
+
+    goal = "methinks it is like a weasel"
+    s = [char for char in s]
+    new_s = ""
+    for i in range(len(s)):
+        if s[i] != goal[i]:
+            s[i] = generate_string(1)
+        new_s += s[i]
+    return new_s
+
+
 def main():
     best_str = ""
     best_score = 0
+    iters = 0
     for i in range(1000):
-        s = generate_string()
+        iters += 1
+        if best_str:
+            print "regenerating from %d%% %s..." % (best_score, best_str)
+            s = regenerate(best_str)
+        else:
+            s = generate_string()
+
         score = score_string(s)
         if score > best_score:
             best_score = score
@@ -63,6 +90,6 @@ def main():
         if score == 100:
             break
 
-    print "closest:", best_str, "score:", str(best_score) +"%"
-    if best_score == 100:
-        print "IT WORKED!!!"
+    print "closest:", best_str, "score:", str(best_score) + "%", "iterations:", iters
+
+    print "IT WORKED!!!"
