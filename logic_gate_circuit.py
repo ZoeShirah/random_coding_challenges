@@ -71,12 +71,12 @@ class AndGate(BinaryGate):
 
 
 class NAndGate(AndGate):
-
+    """take value or AndGate and NOT it"""
     def __init__(self, n, A=None, B=None):
         AndGate.__init__(self, n, A, B)
 
     def performGateLogic(self):
-        if AndGate.performGateLogic(self):
+        if super().performGateLogic(self):
             return 0
         return 1
 
@@ -97,7 +97,7 @@ class OrGate(BinaryGate):
 
 
 class NOrGate(OrGate):
-
+    """take value or OrGate and NOT it"""
     def __init__(self, n, A=None, B=None):
         OrGate.__init__(self, n, A, B)
 
@@ -182,5 +182,5 @@ def main():
 
     NotABandNotCD = n3.getOutput()
 
-    print "Not ((A and B) or (C and D)) =", NotABorCD
+    print "Not((A and B) or (C and D)) =", NotABorCD
     print "Not(A and B) and Not(C and D) =", NotABandNotCD
