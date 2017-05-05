@@ -1,3 +1,11 @@
+# this is a coding challenge i got as a preview interview question --
+# given a pattern like "abba", determine if an input string like "redbluebluered"
+# matches that pattern, return 1 if it does, 0 if it doesn't.
+# the pattern will always be as long as the input
+# the input will not necessarily be composed of dictionary words, e.g.:
+# "aaba" and "xyzxyzabcxzy" should return 1
+
+
 def wordpattern(pattern, input):
 
     var_set = set([char for char in pattern])
