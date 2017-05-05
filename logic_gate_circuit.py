@@ -8,8 +8,27 @@
 # NOT (( A and B) or (C and D)) is that same as NOT( A and B ) and NOT (C and D)
 # Make sure to use some of your new gates in the simulation.
 
+#********************************
+# http://interactivepython.org/runestone/static/pythonds/Introduction/ProgrammingExercises.html
+# Additional Optomizations:
 
-class LogicGate:
+# DONE 1. Research other types of gates that exist (such as NAND, NOR, and XOR). Add
+# them to the circuit hierarchy. How much additional coding did you need to do?
+
+# 2. The most simple arithmetic circuit is known as the half-adder. Research the
+# simple half-adder circuit. Implement this circuit.
+
+# 3. Now extend that circuit and implement an 8 bit full-adder.
+
+# 4. The circuit simulation shown in this chapter works in a backward direction.
+# In other words, given a circuit, the output is produced by working back
+# through the input values, which in turn cause other outputs to be queried.
+# This continues until external input lines are found, at which point the user
+# is asked for values. Modify the implementation so that the action is in the
+# forward direction; upon receiving inputs the circuit produces an output.
+
+
+class LogicGate(object):
 
     def __init__(self, n):
         self.name = n
@@ -76,7 +95,7 @@ class NAndGate(AndGate):
         AndGate.__init__(self, n, A, B)
 
     def performGateLogic(self):
-        if super().performGateLogic(self):
+        if super(NAndGate, self).performGateLogic():
             return 0
         return 1
 
@@ -103,6 +122,29 @@ class NOrGate(OrGate):
 
     def performGateLogic(self):
         if OrGate.performGateLogic(self):
+            return 0
+        return 1
+
+
+class XOrGate(OrGate):
+    """true if either, but not both, are true, false otherwise"""
+    def __init__(self, n, A=None, B=None):
+        OrGate.__init__(self, n, A, B)
+
+    def performGateLogic(self):
+        if self.getPinA() == self.getPinB():
+            return 0
+        return 1
+
+
+class XNOrGate(XOrGate):
+    """NOT of the exclusive or"""
+    def __init__(self, n, A=None, B=None):
+        super(XNOrGate, self).__init__(n, A, B)
+
+    def performGateLogic(self):
+        """invert the XOr of the inputs"""
+        if super(XNOrGate, self).performGateLogic():
             return 0
         return 1
 
