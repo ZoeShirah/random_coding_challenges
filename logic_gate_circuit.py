@@ -15,8 +15,10 @@
 # DONE 1. Research other types of gates that exist (such as NAND, NOR, and XOR). Add
 # them to the circuit hierarchy. How much additional coding did you need to do?
 
-# 2. The most simple arithmetic circuit is known as the half-adder. Research the
-# simple half-adder circuit. Implement this circuit.
+# DONE 2. The most simple arithmetic circuit is known as the half-adder. Research the
+# simple half-adder circuit. Implement this circuit.\
+#   A half-adder takes two inputs (the two binary digits being added) and
+#   generates two out puts--the sum and the carry.
 
 # 3. Now extend that circuit and implement an 8 bit full-adder.
 
@@ -197,6 +199,24 @@ class Connector:
         return self.togate
 
 
+def half_adder(A, B):
+    """adds two binary numbers
+
+    takes two inputs (the two binary numbers being added) and
+    generates two out puts--the sum and the carry.  The two inputs
+    can only be one digit each (e.g, either 0 or 1)"""
+
+    sum_gate = XOrGate("Sum", A, B)
+    carry_gate = AndGate("Carry", A, B)
+
+    return sum_gate.getOutput(), carry_gate.getOutput()
+
+
+def full_adder_eight_bit(A, B):
+    """"""
+    pass
+
+
 def main():
     """NOT (( A and B) or (C and D)) == NOT( A and B ) and NOT (C and D)"""
 
@@ -226,3 +246,4 @@ def main():
 
     print "Not((A and B) or (C and D)) =", NotABorCD
     print "Not(A and B) and Not(C and D) =", NotABandNotCD
+
