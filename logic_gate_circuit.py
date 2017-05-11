@@ -204,7 +204,7 @@ def half_adder(A, B):
 
     takes two inputs (the two binary numbers being added) and
     generates two out puts--the sum and the carry.  The two inputs
-    can only be one digit each (e.g, either 0 or 1)"""
+    can only be one 1 bit (e.g, either 0 or 1)."""
 
     sum_gate = XOrGate("Sum", A, B)
     carry_gate = AndGate("Carry", A, B)
@@ -212,9 +212,57 @@ def half_adder(A, B):
     return sum_gate.getOutput(), carry_gate.getOutput()
 
 
-def full_adder_eight_bit(A, B):
-    """"""
-    pass
+def full_adder(A, B, CIn):
+    """The full adder has three inputs - A, B, and the carry - and two outputs -
+    the sum and the carry. A and B are 1 bit (0 or 1).
+
+    It can be implemented using two half adder circuits. The first will half
+    adder will be used to add A and B to produce a partial Sum. The second half
+    adder logic can be used to add CIN to the Sum produced by the first half
+    adder to get the final S output. If any of the half adder logic produces a
+    carry, there will be an output carry. Thus, COUT will be an OR function of
+    the half-adder Carry outputs."""
+
+    partial_Sum = half_adder(A, B)
+    CInSum = half_adder(CIn, partial_Sum[0])
+    COut = OrGate("COut", partial_Sum[1], CInSum[1])
+
+    return CInSum[0], COut.getOutput()
+
+
+def full_adder_eight_bit(A, B, CIn=0):
+    """a chain of full-adders where the carry out of the previous is the carry
+    in of the next
+
+    A and B are 8 bit binary numbers"""
+
+    if type(A) == str:
+        A = A[2:]
+
+    if type(B) == str:
+        B = B[2:]
+
+    A = str(A)
+    B = str(B)
+    while len(A) < 8:
+        A = "0"+A
+    while len(B) < 8:
+        B = "0"+B
+
+    one_bit = full_adder(int(A[-1]), int(B[-1]), CIn)
+    two_bit = full_adder(int(A[-2]), int(B[-2]), one_bit[1])
+    three_bit = full_adder(int(A[-3]), int(B[-3]), two_bit[1])
+    four_bit = full_adder(int(str(A)[-4]), int(str(B)[-4]), three_bit[1])
+
+    five_bit = full_adder(int(str(A)[-5]), int(str(B)[-5]), four_bit[1])
+    six_bit = full_adder(int(str(A)[-6]), int(str(B)[-6]), five_bit[1])
+    seven_bit = full_adder(int(str(A)[-7]), int(str(B)[-7]), six_bit[1])
+    eight_bit = full_adder(int(str(A)[-8]), int(str(B)[-8]), seven_bit[1])
+
+    result = str(eight_bit[0])+str(seven_bit[0])+str(six_bit[0])+str(five_bit[0]) + \
+        str(four_bit[0]) + str(three_bit[0]) + str(two_bit[0])+str(one_bit[0])
+
+    return result, int(result,2)
 
 
 def main():
