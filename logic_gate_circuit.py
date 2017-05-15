@@ -20,7 +20,7 @@
 #   A half-adder takes two inputs (the two binary digits being added) and
 #   generates two out puts--the sum and the carry.
 
-# 3. Now extend that circuit and implement an 8 bit full-adder.
+# DONE 3. Now extend that circuit and implement an 8 bit full-adder.
 
 # 4. The circuit simulation shown in this chapter works in a backward direction.
 # In other words, given a circuit, the output is produced by working back
@@ -262,7 +262,7 @@ def full_adder_eight_bit(A, B, CIn=0):
     result = str(eight_bit[0])+str(seven_bit[0])+str(six_bit[0])+str(five_bit[0]) + \
         str(four_bit[0]) + str(three_bit[0]) + str(two_bit[0])+str(one_bit[0])
 
-    return result, int(result,2)
+    return result, int(result, 2)
 
 
 def main():
